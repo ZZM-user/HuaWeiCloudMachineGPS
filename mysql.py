@@ -30,8 +30,6 @@ class Mysql:
         self.cur = self.con.cursor()
         self.sign = True
 
-        self.log = " "
-
     def ping(self, reconnect=True):
         """判断连接是否断开，重连"""
         if self._sock is None:
@@ -89,9 +87,8 @@ class Mysql:
     def read_machine_log(self):
         """读取设备定位日志"""
         sql = "select * from login_log;"
-        self.log = self.execute_sql(sql)
-        # print(self.log)
-        return self.log
+        log = self.execute_sql(sql)
+        return log
 
     def save_security_log(self, info):
         """保存安全日志"""

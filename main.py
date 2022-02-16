@@ -58,7 +58,7 @@ class HuaWeiCloudMachineGPS:
     def find_by_xpath(self, locator, timeout=None):
         """通过xpath获取元素 包含等待"""
         if not timeout:
-            timeout = 30
+            timeout = 60
         try:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.presence_of_element_located((By.XPATH, locator))
@@ -88,7 +88,7 @@ class HuaWeiCloudMachineGPS:
         """切换浏览器语言：当前设置为中文"""
         if "华为" in self.driver.title:
             print("\n The current language is Simplified Chinese")
-            return 0
+            return
         js = "div = document.getElementById('wrapper');div.style.overflow='visible';div.style.top='-2700px';"
         self.driver.execute_script(js)
         print("\n JavaScript " + js + " executed")
@@ -112,10 +112,10 @@ class HuaWeiCloudMachineGPS:
         self.find_by_xpath("//input[contains(@class,'hwid-input userAccount')]").send_keys(self.account)
         # 寻找并输入密码
         self.find_by_xpath("//input[@class='hwid-input hwid-input-pwd']").send_keys(self.password)
-        time.sleep(3.5)
+        time.sleep(1.5)
         # 执行登陆动作
         self.find_by_xpath("//div[@class='normalBtn']").click()
-        time.sleep(0.5)
+        time.sleep(2.5)
         if self.find_by_xpath("//div[@id='userName']") is not None:
             print("\n Account Login succeeded! : " + self.account)
             return True
@@ -126,10 +126,10 @@ class HuaWeiCloudMachineGPS:
         """切换至查找设备"""
         self.find_by_xpath("//div[@class='warpHome mobile']").click()
         time.sleep(1.6)
-        if self.find_by_xpath("//div[@class='header_name_item']") is not None:
-            print("\n The location information screen is displayed!")
-            return True
-        return False
+        if self.find_by_xpath("//div[@class='header_name_item']") is None:
+            return False
+        print("\n The location information screen is displayed!")
+        return True
 
     def online_notice(self):
         """离线通知"""
@@ -145,7 +145,7 @@ class HuaWeiCloudMachineGPS:
 
     def collect_info(self):
         """获取设备信息"""
-        time.sleep(3)
+        time.sleep(10)
         # 设备名、设备状态、物理地址、电池信息、网络信息、更新时间、保存时间
         self.info["Machine"] = self.find_by_xpath("//div[@class='header_name_item']").text
         self.info["Status"] = self.find_by_xpath("//div[contains(@class,'device_status')]").text
@@ -161,6 +161,9 @@ class HuaWeiCloudMachineGPS:
             self.info["NetWork"] = self.find_by_xpath("//span[@class='device_wlan_info']").text
             self.info["Address"] = self.find_by_xpath("//div[contains(@class,'offLineInfo')]").text
             self.info["UpdateTime"] = self.find_by_xpath("//span[@class='updateTime']").text
+            if "前更新" in self.info["UpdateTime"]:
+                self.driver.refresh()
+                self.collect_info()
         self.info["Battery"] = self.find_by_xpath("//div[contains(@class,'batteryPower')]").text
         self.info["SaveTime"] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
@@ -184,7 +187,7 @@ class HuaWeiCloudMachineGPS:
             self.prt_screen()
             self.Notice.send(title="你的程序出现问题了: HuaWeiCloudMachineGPS", content=str(e))
         finally:
-            self.driver.close()
+            self.driver.quit()
 
 
 if __name__ == '__main__':

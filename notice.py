@@ -24,6 +24,7 @@ class PushPlus:
         }
 
     def send(self, title, content):
+        """发送信息"""
         self.data["title"] = title
         self.data["content"] = content
         body = json.dumps(self.data).encode(encoding='utf-8')
