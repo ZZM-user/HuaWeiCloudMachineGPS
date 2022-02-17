@@ -37,13 +37,13 @@ class SecurityCheck:
             "Machine": self.least[1],
             "ChangeType": "",
             "OnlineStatus": "",
-            "Online": "【上次记录】" + self.least[2],
+            "Online": "【上次】" + self.least[2],
             "AddressStatus": "",
-            "Address": "【上次记录】" + self.least[3],
+            "Address": "【上次】" + self.least[3],
             "BatteryStatus": "",
-            "Battery": "【上次记录】" + self.least[4],
+            "Battery": "【上次】" + self.least[4],
             "NetWorkStatus": "",
-            "NetWork": "【上次记录】" + self.least[5],
+            "NetWork": "【上次】" + self.least[5],
         }
 
     def online_check(self):
