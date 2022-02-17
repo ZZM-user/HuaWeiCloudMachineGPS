@@ -61,7 +61,7 @@ class SecurityCheck:
                 self.status_change["AddressStatus"] = "省市级变更"
             elif self.last[3][:6] != self.least[3][:6]:
                 self.status_change["AddressStatus"] = "市区县级变更"
-            elif self.last[3][:-6] != self.least[3][:-6] and self.last[3][-6:] != self.least[3][-6:]:
+            elif self.last[3][-6:] != self.least[3][-6:]:
                 self.status_change["AddressStatus"] = "乡镇级变更"
             else:
                 self.status_change["AddressStatus"] = "位置偏移变更"
