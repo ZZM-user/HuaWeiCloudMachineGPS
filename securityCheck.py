@@ -26,25 +26,25 @@ class SecurityCheck:
         """初始化log日志数据"""
         self.log = self.MySqlDB.read_machine_log()
         self.length = len(self.log)
-        self.status_change = {
-            "UpdateDate": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
-            "Machine": self.log[self.length - 1][1],
-            "ChangeType": "",
-            "OnlineStatus": "",
-            "Online": "【上次记录】" + self.log[self.length - 1][2],
-            "AddressStatus": "",
-            "Address": "【上次记录】" + self.log[self.length - 1][3],
-            "BatteryStatus": "",
-            "Battery": "【上次记录】" + self.log[self.length - 1][4],
-            "NetWorkStatus": "",
-            "NetWork": "【上次记录】" + self.log[self.length - 1][5],
-        }
-        # 最新一条log,上一条log
+        # 最新一条log(本次记录的log),上一条log(上一次记录的log)
         self.last = self.log[self.length - 1]
         if self.length > 1:
             self.least = self.log[self.length - 2]
         else:
             self.least = self.last
+        self.status_change = {
+            "UpdateDate": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
+            "Machine": self.log[self.least][1],
+            "ChangeType": "",
+            "OnlineStatus": "",
+            "Online": "【上次记录】" + self.log[self.least][2],
+            "AddressStatus": "",
+            "Address": "【上次记录】" + self.log[self.least][3],
+            "BatteryStatus": "",
+            "Battery": "【上次记录】" + self.log[self.least][4],
+            "NetWorkStatus": "",
+            "NetWork": "【上次记录】" + self.log[self.least][5],
+        }
 
     def online_check(self):
         """在线状态检查"""
@@ -54,14 +54,15 @@ class SecurityCheck:
 
     def address_check(self):
         """登录地址变更检查"""
+        mid = len(self.last) / 2
         if self.last[3] != self.least[3]:
-            # 发消息警报
-            if self.last[3][:2] != self.least[3][:2]:
+            # 发消息通知
+            if self.last[3][:3] != self.least[3][:3]:
                 # 这是出省了啊
                 self.status_change["AddressStatus"] = "省市级变更"
-            elif self.last[3][:6] != self.least[3][:6]:
+            elif self.last[3][:mid] != self.least[3][:mid]:
                 self.status_change["AddressStatus"] = "市区县级变更"
-            elif self.last[3][-6:] != self.least[3][-6:]:
+            elif self.last[3][mid:] != self.least[3][mid:]:
                 self.status_change["AddressStatus"] = "乡镇级变更"
             else:
                 self.status_change["AddressStatus"] = "位置偏移变更"
@@ -70,7 +71,7 @@ class SecurityCheck:
     def network_check(self):
         """网络信息变更检查"""
         if self.last[5] != self.least[5]:
-            # 发消息警报
+            # 发消息通知
             mid = int(len(self.last[5]) / 2)
             if self.last[5][:mid] == self.least[5][:mid]:
                 self.status_change["NetWorkStatus"] = "变化不大"
