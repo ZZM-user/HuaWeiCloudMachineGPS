@@ -54,7 +54,7 @@ class SecurityCheck:
 
     def address_check(self):
         """登录地址变更检查"""
-        mid = len(self.last[3]) / 2
+        mid = len(self.last[3]) // 2
         if self.last[3] != self.least[3]:
             # 发消息通知
             if self.last[3][:3] != self.least[3][:3]:
@@ -72,7 +72,7 @@ class SecurityCheck:
         """网络信息变更检查"""
         if self.last[5] != self.least[5]:
             # 发消息通知
-            mid = int(len(self.last[5]) / 2)
+            mid = len(self.last[5]) // 2
             if self.last[5][:mid] == self.least[5][:mid]:
                 self.status_change["NetWorkStatus"] = "变化不大"
             else:
