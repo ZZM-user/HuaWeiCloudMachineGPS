@@ -34,16 +34,16 @@ class SecurityCheck:
             self.least = self.last
         self.status_change = {
             "UpdateDate": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
-            "Machine": self.log[self.least][1],
+            "Machine": self.least[1],
             "ChangeType": "",
             "OnlineStatus": "",
-            "Online": "【上次记录】" + self.log[self.least][2],
+            "Online": "【上次记录】" + self.least[2],
             "AddressStatus": "",
-            "Address": "【上次记录】" + self.log[self.least][3],
+            "Address": "【上次记录】" + self.least[3],
             "BatteryStatus": "",
-            "Battery": "【上次记录】" + self.log[self.least][4],
+            "Battery": "【上次记录】" + self.least[4],
             "NetWorkStatus": "",
-            "NetWork": "【上次记录】" + self.log[self.least][5],
+            "NetWork": "【上次记录】" + self.least[5],
         }
 
     def online_check(self):
@@ -54,7 +54,7 @@ class SecurityCheck:
 
     def address_check(self):
         """登录地址变更检查"""
-        mid = len(self.last) / 2
+        mid = len(self.last[3]) / 2
         if self.last[3] != self.least[3]:
             # 发消息通知
             if self.last[3][:3] != self.least[3][:3]:
