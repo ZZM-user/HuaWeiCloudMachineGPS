@@ -7,6 +7,7 @@
     # @Date   : 2021/12/19 16:45
     # @Desc   :  华为云服务监控设备定位
 """
+import random
 import time
 import os
 from selenium import webdriver
@@ -33,8 +34,8 @@ class HuaWeiCloudMachineGPS:
         self.options.add_argument('--disable-gpu')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('blink-settings=imagesEnabled=false')
-        # self.options.add_argument(
-        #     'user-agent="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"')
+        self.options.add_argument('user-agent="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"')
         self.driver = webdriver.Chrome(options=self.options)
         # 隐式等待
         self.driver.implicitly_wait(60)
@@ -53,6 +54,7 @@ class HuaWeiCloudMachineGPS:
         if self.log_length:
             self.Security = SecurityCheck()
         self.Notice = PushPlus()
+        # 下面是linux平台地址
         self.save_bug_img = "/opt/task/HuaWeiCloudMachineGPS/bugPrtScreen/"
 
     def find_by_xpath(self, locator, timeout=None):
@@ -141,11 +143,12 @@ class HuaWeiCloudMachineGPS:
         self.find_by_xpath("//input[contains(@class,'has-country-list')]").send_keys(self.account)
         # 确定
         self.find_by_xpath("//div[contains(@class,'dialog_button enable')]").click()
-        print("A device offline notification has been sent. Procedure")
+        print(" A device offline notification has been sent. Procedure")
 
     def collect_info(self):
         """获取设备信息"""
-        time.sleep(10)
+        self.driver.refresh()
+        time.sleep(random.uniform(13.2, 36.8) * 2.15)
         # 设备名、设备状态、物理地址、电池信息、网络信息、更新时间、保存时间
         self.info["Machine"] = self.find_by_xpath("//div[@class='header_name_item']").text
         self.info["Status"] = self.find_by_xpath("//div[contains(@class,'device_status')]").text
@@ -172,7 +175,7 @@ class HuaWeiCloudMachineGPS:
             if self.login():
                 if self.switch_to_find_devices():
                     self.driver.refresh()
-                    time.sleep(2.5)
+                    time.sleep(20)
                     self.collect_info()
                     # 检测状态 判断是否发送离线通知
                     if "离线" in self.info["Status"]:

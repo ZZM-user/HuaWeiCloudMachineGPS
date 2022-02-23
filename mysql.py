@@ -18,7 +18,7 @@ class Mysql:
     def __init__(self):
         self.host = "127.0.0.1"
         self.user = "root"
-        self.password = "root"
+        self.password = "roo"
         self.database = "huaweimachinegps"
         self.port = 3306
         self.charset = "utf8"
@@ -37,7 +37,7 @@ class Mysql:
                 self.connect()
                 reconnect = False
             else:
-                raise err.Error(" Already closed")
+                raise err.Error("Database Already closed")
         try:
             self._execute_command(COMMAND.COM_PING, "")
             self._read_ok_packet()
@@ -48,7 +48,7 @@ class Mysql:
             else:
                 raise
 
-    def execute_sql(self, sql):
+    def execute_sql(self, sql: str):
         """执行SQL语句"""
         try:
             self.con.ping()
@@ -73,15 +73,15 @@ class Mysql:
             if sql[:6] == "select":
                 return result
 
-    def save_login_log(self, info):
+    def save_login_log(self, info: dict):
         """保存设备定位信息"""
-        # 设备名、设备状态、物理地址、电池信息、网络信息、更新时间、保存时间
+        keys = list(info.keys())
         # 构建时间戳id
         id = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
         insert_comm = 'insert into login_log values({0},"{1}","{2}","{3}","{4}","{5}","{6}","{7}");'.format(
-            id, info["Machine"], info["Status"], info["Address"], info["Battery"], info["NetWork"], info["UpdateTime"],
-            info["SaveTime"])
+            id, info[keys[0]], info[keys[1]], info[keys[2]], info[keys[3]],
+            info[keys[4]], info[keys[5]], info[keys[6]])
         self.execute_sql(insert_comm)
 
     def read_machine_log(self):
@@ -90,12 +90,20 @@ class Mysql:
         log = self.execute_sql(sql)
         return log
 
-    def save_security_log(self, info):
+    def save_security_log(self, info: dict):
         """保存安全日志"""
+        keys = list(info.keys())
         sql = 'insert into security_log values("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}");'.format(
-            info["UpdateDate"], info["Machine"], info["ChangeType"], info["OnlineStatus"], info["Online"],
-            info["AddressStatus"], info["Address"], info["NetWorkStatus"], info["NetWork"], info["BatteryStatus"],
-            info["Battery"])
+            info[keys[0]], info[keys[1]], info[keys[2]], info[keys[3]], info[keys[4]],
+            info[keys[5]], info[keys[6]], info[keys[7]], info[keys[8]], info[keys[9]], info[keys[10]])
+        self.execute_sql(sql)
+
+    def save_location_log(self, info: dict):
+        """写入位置信息记录"""
+        keys = list(info.keys())
+        sql = 'insert into location_log values("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}");'.format(
+            info[keys[0]], info[keys[1]], info[keys[2]], info[keys[3]], info[keys[4]],
+            info[keys[5]], info[keys[6]], info[keys[7]], info[keys[8]])
         self.execute_sql(sql)
 
 

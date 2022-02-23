@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-    # @Project -> File: HuaWeiCloudMachineGPS -> notice
+    # @Project -> File: HuaWeiCloudMachineGPS -> send_notice
     # @IDE: PyCharm
     # @Author : ZZM_T
     # @Date   : 2021/12/20 16:31
