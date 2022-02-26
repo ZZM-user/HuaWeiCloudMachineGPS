@@ -15,9 +15,9 @@ import requests
 
 class PushPlus:
     def __init__(self):
-        self.push_url = "http://pushplus.hxtrip.com/send"
+        self.push_url = "http://www.pushplus.plus/send"
         self.data = {
-            "token": "",
+            "token": " ",
             "title": " ",
             "content": " ",
             "template": "json"
