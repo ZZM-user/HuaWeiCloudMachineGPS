@@ -12,15 +12,18 @@
 - ~~优化地理位置移动分析~~【已完成】
 - 简化数据库操作流程
 - 避免因设备睡死导致的状态误检测【实验中】
-- ~~更换通知渠道~~[Pushplus+复活,暂时搁置]
+- ~~更换通知渠道~~ 【Pushplus+复活,暂时搁置】
+- 启动在线chromedriver，既无需手动配置chromedriver
+- 优化设备长期离线处理
+
 ---
 #### 你需要准备的
 
 - 华为账号、密码
 - 数据库地址、账户、密码、数据库名
-- PushPlus的Token
-- 高德地图API接口【新增】
-- Selenium运行环境
+- [PushPlus](https://pushplus.plus)的Token
+- [高德地图坐标拾取器](https://lbs.amap.com/tools/picker) 所需接口参数【新增】
+- [Selenium运行环境](https://www.cnblogs.com/rerise/p/14972778.html)
 
 ---
 #### 数据库组成结构
