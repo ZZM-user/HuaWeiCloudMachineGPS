@@ -22,7 +22,7 @@
 - 华为账号、密码
 - 数据库地址、账户、密码、数据库名
 - [PushPlus](https://pushplus.plus)的Token
-- [高德地图坐标拾取器](https://lbs.amap.com/tools/picker) 所需接口参数【新增】
+- [高德地图坐标拾取器](https://lbs.amap.com/tools/picker) 所需接口参数
 - [Selenium运行环境](https://www.cnblogs.com/rerise/p/14972778.html)
 
 ---
