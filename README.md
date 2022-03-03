@@ -13,7 +13,7 @@
 - 简化数据库操作流程
 - 避免因设备睡死导致的状态误检测【实验中】
 - ~~更换通知渠道~~ 【Pushplus+复活,暂时搁置】
-- 启动在线chromedriver，既无需手动配置chromedriver
+- 使用在线chromedriver，既无需手动配置chromedriver
 - 优化设备长期离线处理
 
 ---
